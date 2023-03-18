@@ -6,6 +6,14 @@ type Base = {
   _updatedAt: string;
 };
 
+type Item = {
+  title: string;
+  slug: string;
+  price: number;
+  quantity: number;
+  image: Image;
+}
+
 interface Post extends Base {
   price: number;
   body: Block[];

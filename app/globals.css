@@ -15,5 +15,48 @@
 }
 
 @layer base {
-  
+  .layout {
+    @apply bg-gray-200 no-scrollbar mx-20 mb-16;
+  }
+  .shopLayout {
+    @apply grid gap-8 grid-flow-row-dense grid-cols-1 md:grid-cols-2 lg:grid-cols-3
+  }
+  .shopLayoutMarginR {
+    @apply grid gap-8 grid-flow-row-dense grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mr-24
+  }
+  .card {
+    @apply relative h-[50vh] md:h-[35vh];
+  }
+
+  .sideBarR {
+    @apply top-0 w-fit min-h-full border-l-2 flex flex-col overflow-y-scroll no-scrollbar;
+  }
+  .sideBarB {
+    @apply fixed right-0 bottom-0 w-full h-16 border border-gray-300 border-t-2 gap-4 bg-white z-10;
+  }
+  .basketIcon {
+    @apply text-lg text-center w-40 h-fit mx-auto pt-2 border-t border-black visible;
+  }
+
+  .smallButton {
+    @apply h-full w-1/2 bg-gray-100/50 text-lg hover:bg-gray-400/50;
+  }
+  .largeButton {
+    @apply bg-blue-500 w-full mx-auto md:w-[25vmax] 2xl:w-[10vmax] h-12 text-lg rounded;
+  }
+  .largeButton:hover {
+    @apply transition hue-rotate-15 text-white; 
+  }
+  .largeButton:active {
+    @apply transform scale-95;
+  }
+  .productImg {
+    @apply relative w-full h-[35vmax]
+    md:w-[40vmin] md:h-[40vmin]
+    lg:w-[50vmin] lg:h-[50vmin]
+    2xl:w-[30vmax] 2xl:h-[30vmax];
+  }
+  .miniImgs {
+    @apply relative w-20 h-20 md:w-[7vw] md:h-[7vw] 2xl:w-[5vw] 2xl:h-[5vw];
+  }
 }

@@ -1,5 +1,19 @@
 import '../globals.css'
 
-export default function Home() {
-  return <div className='text-center text-2xl'>HOME PAGE</div>
+import { client } from '@/lib/sanity.client'
+import { groq } from 'next-sanity'
+import Grid from '@/components/Grid'
+
+const QUERY_POSTS = groq`
+*[_type == 'post'] {
+  ...,
+  categories[]->,
+} | order(_createdAt desc)
+`;
+
+export default async function Home() {
+  const posts = await client.fetch(QUERY_POSTS);
+  return (
+    <Grid posts={posts} />
+  )
 }
