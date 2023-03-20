@@ -57,14 +57,14 @@ export default function vercelHandler(req: VercelRequest, res: VercelResponse) {
       // For the article document in this example we want to resolve a list of
       // references to authors and get their names as an array. We can do this
       // directly in the GROQ query in the custom projection.
-      article: {
-        index: algoliaIndex,
-        projection: `{
-          heading,
-          "body": pt::text(body),
-          "authorNames": authors[]->name
-        }`,
-      },
+      // article: {
+      //   index: algoliaIndex,
+      //   projection: `{
+      //     heading,
+      //     "body": pt::text(body),
+      //     "authorNames": authors[]->name
+      //   }`,
+      // },
     },
 
     // The second parameter is a function that maps from a fetched Sanity document
@@ -112,7 +112,7 @@ export default function vercelHandler(req: VercelRequest, res: VercelResponse) {
     .catch(err => {
       return {
         statusCode: 500,
-        body: JSON.stringify({ message: 'Something went wrong' })
+        body: JSON.stringify({ message: 'SOMETHING WENT HORRIBLY WRONG!' })
       }
     })
 }
