@@ -18,7 +18,7 @@ export default function BasketIcon({ produce }: { produce: Item }) {
 
   function handleChange() {
     const elementId = "quantity-" + slug
-    const value = document.getElementById(elementId).value!
+    const value = (document.getElementById(elementId) as HTMLInputElement).value;
 
     setQuantity(produce, parseInt(value))
   }
