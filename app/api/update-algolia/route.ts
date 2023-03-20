@@ -33,7 +33,7 @@ export default function vercelHandler(req: VercelRequest, res: VercelResponse) {
   // TODO: Add a webhook secret here ??
 
   // Configure this to match an existing Algolia index name
-  const algoliaIndex = algolia.initIndex('my-index')
+  const algoliaIndex = algolia.initIndex('posts')
 
   const sanityAlgolia = indexer(
     // The first parameter maps a Sanity document type to its respective Algolia
