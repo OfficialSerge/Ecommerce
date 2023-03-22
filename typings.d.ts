@@ -14,16 +14,6 @@ type Item = {
   image: Image;
 }
 
-interface Post extends Base {
-  price: number;
-  body: Block[];
-  categories: Category[];
-  images: Image[];
-  slug: Slug;
-  title: string;
-  description: string;
-}
-
 interface Image {
   _type: "image";
   asset: Reference;
@@ -39,6 +29,26 @@ interface Slug {
   current: string;
 }
 
+interface Title {
+  _type: "string";
+  current: string;
+}
+
+interface Category extends Base {
+  description: string;
+  title: string;
+}
+
+interface Post extends Base {
+  price: number;
+  body: Block[];
+  categories: Category[];
+  images: Image[];
+  slug: Slug;
+  title: string;
+  description: string;
+}
+
 interface Block {
   _key: string;
   _type: "block";
@@ -46,20 +56,4 @@ interface Block {
   markDefs: any[];
   style: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
 }
-//
-// interface Span {
-//   _key: string;
-//   _type: "span";
-//   marks: string[];
-//   text: string;
-// }
-//
-interface Category extends Base {
-  description: string;
-  title: string;
-}
 
-interface Title {
-  _type: "string";
-  current: string;
-}

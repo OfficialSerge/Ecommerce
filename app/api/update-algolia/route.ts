@@ -18,11 +18,26 @@ const sanity = createClient({
   useCdn: false,
 })
 
+const ALGOLIA_DATA = /* groq */`
+*[
+  _type == 'post'
+  && defined(slug.current)
+] {
+  title,
+  price,
+  "image": images[0].asset._ref,
+  "category": {
+    "title": categories[0]->title,
+    "description": categories[0]->description
+  }
+}`;
+
+
 /**
  *  This function receives webhook POSTs from Sanity and updates, creates or
  *  deletes records in the corresponding Algolia indices.
  */
-export default function vercelHandler(req: VercelRequest, res: VercelResponse) {
+export async function POST(req: VercelRequest, res: VercelResponse) {
   // Tip: Add webhook secrets to verify that the request is coming from Sanity.
   // See more at: https://www.sanity.io/docs/webhooks#bfa1758643b3
   if (req.headers['content-type'] !== 'application/json') {
@@ -30,7 +45,6 @@ export default function vercelHandler(req: VercelRequest, res: VercelResponse) {
     res.json({ message: 'Bad request' })
     return
   }
-  // TODO: Add a webhook secret here ??
 
   // Configure this to match an existing Algolia index name
   const algoliaIndex = algolia.initIndex('posts')
@@ -41,30 +55,26 @@ export default function vercelHandler(req: VercelRequest, res: VercelResponse) {
     // in the same Algolia index. Optionally you can also customize how the
     // document is fetched from Sanity by specifying a GROQ projection.
     //
-    // In this example we fetch the plain text from Portable Text rich text
-    // content via the pt::text function.
-    //
     // _id and other system fields are handled automatically.
     {
       post: {
         index: algoliaIndex,
         projection: `{
           title,
-          "path": slug.current,
-          "body": pt::text(body)
+          price,
+          "image": images[0].asset._ref
         }`,
       },
       // For the article document in this example we want to resolve a list of
       // references to authors and get their names as an array. We can do this
       // directly in the GROQ query in the custom projection.
-      // article: {
-      //   index: algoliaIndex,
-      //   projection: `{
-      //     heading,
-      //     "body": pt::text(body),
-      //     "authorNames": authors[]->name
-      //   }`,
-      // },
+      category: {
+        index: algoliaIndex,
+        projection: `{
+          title,
+          description
+        }`,
+      },
     },
 
     // The second parameter is a function that maps from a fetched Sanity document
@@ -73,14 +83,15 @@ export default function vercelHandler(req: VercelRequest, res: VercelResponse) {
     (document: SanityDocumentStub) => {
       switch (document._type) {
         case 'post':
-          return Object.assign({}, document, {
-            custom: 'An additional custom field for posts, perhaps?',
-          })
-        case 'article':
           return {
-            title: document.heading,
-            body: document.body,
-            authorNames: document.authorNames,
+            title: document.title,
+            price: document.price,
+            image: document.image
+          }
+        case 'category':
+          return {
+            title: document.title,
+            description: document.description
           }
         default:
           return document
@@ -108,7 +119,10 @@ export default function vercelHandler(req: VercelRequest, res: VercelResponse) {
   // client and make sure the algolia indices are synced to match.
   return sanityAlgolia
     .webhookSync(sanity, req.body)
-    .then(() => res.status(200).send('ok'))
+    .then(() => ({
+      statusCode: 200,
+      body: JSON.stringify({ message: 'Success!' })
+    }))
     .catch(err => {
       return {
         statusCode: 500,
