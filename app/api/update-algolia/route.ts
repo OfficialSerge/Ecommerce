@@ -1,7 +1,7 @@
 import algoliasearch from 'algoliasearch';
 import { createClient, type SanityDocumentStub } from '@sanity/client'
-import type { VercelRequest, VercelResponse } from '@vercel/node';
 import indexer from 'sanity-algolia';
+import { NextRequest } from 'next/server';
 
 const algolia = algoliasearch(
   "55L0ZMZNID",
@@ -37,15 +37,7 @@ const ALGOLIA_DATA = /* groq */`
  *  This function receives webhook POSTs from Sanity and updates, creates or
  *  deletes records in the corresponding Algolia indices.
  */
-export async function POST(req: VercelRequest, res: VercelResponse) {
-  // Tip: Add webhook secrets to verify that the request is coming from Sanity.
-  // See more at: https://www.sanity.io/docs/webhooks#bfa1758643b3
-  if (req.headers['content-type'] !== 'application/json') {
-    res.status(400)
-    res.json({ message: 'Bad request' })
-    return
-  }
-
+export async function POST(req: NextRequest) {
   // Configure this to match an existing Algolia index name
   const algoliaIndex = algolia.initIndex('posts')
 
@@ -118,7 +110,7 @@ export async function POST(req: VercelRequest, res: VercelResponse) {
   // inspect the webhook payload, make queries back to Sanity with the `sanity`
   // client and make sure the algolia indices are synced to match.
   return sanityAlgolia
-    .webhookSync(sanity, req.body)
+    .webhookSync(sanity, req.body as any)
     .then(() => ({
       statusCode: 200,
       body: JSON.stringify({ message: 'Success!' })
