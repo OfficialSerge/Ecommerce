@@ -13,20 +13,6 @@ const QUERY_POSTS = groq`
 }
 `;
 
-const ALGOLIA = /* groq */`
-*[
-  _type == 'post'
-  && defined(slug.current)
-] {
-  title,
-  price,
-  "image": images[0].asset._ref,
-  "category": {
-    "title": categories[0]->title,
-    "description": categories[0]->description
-  }
-}`;
-
 export default async function Home() {
   const posts = await client.fetch(QUERY_POSTS);
 

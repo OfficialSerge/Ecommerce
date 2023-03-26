@@ -1,7 +1,7 @@
 import algoliasearch from 'algoliasearch';
 import { createClient, type SanityDocumentStub } from '@sanity/client'
 import indexer from 'sanity-algolia';
-import { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 
 const algolia = algoliasearch(
   "55L0ZMZNID",
@@ -18,34 +18,24 @@ const sanity = createClient({
   useCdn: false,
 })
 
-const ALGOLIA_DATA = /* groq */`
+const QUERY = /* groq */`
 *[
   _type == 'post'
   && defined(slug.current)
-] {
-  title,
-  price,
-  "image": images[0].asset._ref,
-  "category": {
-    "title": categories[0]->title,
-    "description": categories[0]->description
-  }
-}`;
-
+]`;
 
 /**
  *  This function receives webhook POSTs from Sanity and updates, creates or
  *  deletes records in the corresponding Algolia indices.
  */
-export async function POST(req: NextRequest) {
+export async function GET() {
   // Configure this to match an existing Algolia index name
   const algoliaIndex = algolia.initIndex('posts')
 
   const sanityAlgolia = indexer(
     // The first parameter maps a Sanity document type to its respective Algolia
-    // search index. In this example both `post` and `article` Sanity types live
-    // in the same Algolia index. Optionally you can also customize how the
-    // document is fetched from Sanity by specifying a GROQ projection.
+    // search index. Optionally you can also customize how the document is 
+    // fetched from Sanity by specifying a GROQ projection.
     //
     // _id and other system fields are handled automatically.
     {
@@ -54,17 +44,12 @@ export async function POST(req: NextRequest) {
         projection: `{
           title,
           price,
-          "image": images[0].asset._ref
-        }`,
-      },
-      // For the article document in this example we want to resolve a list of
-      // references to authors and get their names as an array. We can do this
-      // directly in the GROQ query in the custom projection.
-      category: {
-        index: algoliaIndex,
-        projection: `{
-          title,
-          description
+          "image": images[0].asset._ref,
+          "slug": slug.current,
+          "category": {
+            "title": categories[0]->title,
+            "description": categories[0]->description
+          }
         }`,
       },
     },
@@ -73,20 +58,12 @@ export async function POST(req: NextRequest) {
     // to an Algolia Record. Here you can do further mutations to the data before
     // it is sent to Algolia.
     (document: SanityDocumentStub) => {
-      switch (document._type) {
-        case 'post':
-          return {
-            title: document.title,
-            price: document.price,
-            image: document.image
-          }
-        case 'category':
-          return {
-            title: document.title,
-            description: document.description
-          }
-        default:
-          return document
+      return {
+        title: document.title,
+        slug: document.slug,
+        price: document.price,
+        image: document.image,
+        category: document.category
       }
     },
     // Visibility function (optional).
@@ -109,16 +86,29 @@ export async function POST(req: NextRequest) {
   // configured serializers and optional visibility function. `webhookSync` will
   // inspect the webhook payload, make queries back to Sanity with the `sanity`
   // client and make sure the algolia indices are synced to match.
-  return sanityAlgolia
-    .webhookSync(sanity, req.body as any)
-    .then(() => ({
-      statusCode: 200,
-      body: JSON.stringify({ message: 'Success!' })
-    }))
-    .catch(err => {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ message: 'SOMETHING WENT HORRIBLY WRONG!' })
+  try {
+    const posts = await sanity.fetch(QUERY)
+
+    const webhookbody = {
+      ids: {
+        created: posts.map(post => post._id),
+        updated: [],
+        deleted: []
       }
+    }
+
+    sanityAlgolia.webhookSync(sanity, webhookbody)
+
+    return NextResponse.json({
+      statusCode: 200,
+      body: { message: "Success!" }
     })
+
+  } catch (err) {
+    console.log(err)
+    return NextResponse.json({
+      statusCode: 500,
+      body: { message: 'SOMETHING WENT HORRIBLY WRONG!' }
+    })
+  }
 }
