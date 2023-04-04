@@ -16,13 +16,13 @@
 
 @layer base {
   .layout {
-    @apply bg-gray-200 no-scrollbar mx-20 mb-16;
+    @apply bg-gray-200 no-scrollbar mb-16 mx-9 md:mx-40;
   }
   .shopLayout {
     @apply grid gap-8 grid-flow-row-dense grid-cols-1 md:grid-cols-2 lg:grid-cols-3
   }
   .shopLayoutMarginR {
-    @apply grid gap-8 grid-flow-row-dense grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mr-24
+    @apply grid gap-8 grid-flow-row-dense grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mr-4
   }
   .card {
     @apply relative h-[50vh] md:h-[35vh];

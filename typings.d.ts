@@ -12,6 +12,7 @@ type Item = {
   price: number;
   quantity: number;
   image: Image;
+  checked: boolean;
 }
 
 interface Image {

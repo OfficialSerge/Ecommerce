@@ -1,12 +1,18 @@
 "use client"
 
-import { useCartContext } from "@/contexts/cart"
+import { useCartContext } from "@/contexts/CartContext"
+import { usePathname } from "next/navigation"
 
 import BasketIcon from "./BasketIcon"
 import Link from "next/link"
 
 export default function SideBar() {
   const { basket } = useCartContext()
+  const path = usePathname()
+
+  if (path == '/checkout' || path == '/confirm') {
+    return null
+  }
 
   return (
     <div className={basket.length > 0 ? 'sideBarB md:sideBarR' : 'sideBarB md:hidden'}>

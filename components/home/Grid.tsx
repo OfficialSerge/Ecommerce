@@ -1,6 +1,6 @@
 "use client"
 
-import { useCartContext } from '@/contexts/cart'
+import { useCartContext } from "@/contexts/CartContext"
 
 import Card from './Card'
 

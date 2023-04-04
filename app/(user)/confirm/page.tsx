@@ -1,18 +1,20 @@
 "use client"
 
 import Link from "next/link"
+import OrderConfirmation from "@/components/confirm/OrderConfirmation"
 
-import { useCartContext } from "@/contexts/cart"
+import { Suspense } from "react"
 
 export default function Page() {
-  const { userId } = useCartContext()
-
   return (
-    <div className='text-center text-2xl'>
-      <h1>ORDER CONFIRMATION</h1>
+    <>
+      <Suspense fallback={<p className="w-full h-full bg-red-200">LOADING LOADING LOADING</p>}>
+        <OrderConfirmation />
+      </Suspense>
       <br />
-      <p>{userId || "set user ID"}</p>
+      <Link href="/checkout">Back to Checkout</Link>
       <br />
-      <Link href="/checkout">CHECKOUT</Link>
-    </div>)
+      <Link href="/">Continue Shopping</Link>
+    </>
+  )
 }

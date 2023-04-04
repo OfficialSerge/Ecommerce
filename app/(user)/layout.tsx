@@ -2,8 +2,8 @@ import '../globals.css'
 
 import Providers from './Providers'
 
-import Header from '@/components/Header'
-import SideBar from '@/components/SideBar'
+import Header from '@/components/header/Header'
+import SideBar from '@/components/sideBar/SideBar'
 
 export const metadata = {
   title: 'Create Next App',

@@ -2,7 +2,7 @@ import '../globals.css'
 
 import { client } from '@/lib/sanity.client'
 import { groq } from 'next-sanity'
-import Grid from '@/components/Grid'
+import Grid from '@/components/home/Grid';
 
 const QUERY_POSTS = groq`
 *[

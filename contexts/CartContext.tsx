@@ -1,111 +1,115 @@
 "use client"
 
-import { createContext, useContext, Dispatch, SetStateAction, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
 
 interface ContextProps {
-  userId: string;
-  setUserId: Dispatch<SetStateAction<string>>;
-  basket: Item[];
-  addOne: (post: Post) => void;
-  subOne: (post: Post) => void;
+  basket: Item[] | [];
+  addOne: (produce: Item) => void;
+  subOne: (produce: Item) => void;
   clearEntry: (produce: Item) => void;
-  setQuantity: (produce: Item, quanity: number) => void;
+  setQuantity: (produce: Item, newQuantity: number) => void;
+  toggleCheck: (produce: Item) => void;
 }
 
 const CartContext = createContext<ContextProps>({
-  userId: '',
-  setUserId: (): string => '',
   basket: [],
   addOne: (): Item[] => [],
   subOne: (): Item[] => [],
   clearEntry: (): Item[] => [],
-  setQuantity: (): Item[] => []
+  setQuantity: (): Item[] => [],
+  toggleCheck: (): Item[] => []
 })
 
 export function CartContextProvider({ children }: { children: React.ReactNode }) {
-  const [userId, setUserId] = useState('')
-  const [basket, setBasket] = useState<[] | Item[]>([])
+  const { clientLocalStorage, setLocalStorage } = useLocalStorage()
+  const [basket, setBasket] = useState<Item[]>([])
 
-  function addOne(post: Post) {
-    const {
-      title,
-      slug,
-      price,
-      images
-    } = post
+  // grab initial value from window.localStorage
+  useEffect(() => {
+    setBasket(clientLocalStorage)
+  }, [clientLocalStorage])
 
-    const produceIdx = basket.findIndex(item => item.slug == slug.current)
+  // update localStorage if basket changes
+  useEffect(() => {
+    setLocalStorage(basket)
+  }, [basket])
 
-    if (produceIdx == -1) {
-      setBasket([...basket, { title: title, slug: slug.current, price: price, quantity: 1, image: images[0] }])
-      return
-    }
+  function addOne(produce: Item) {
+    setBasket(basket => {
+      const newBasket = [...basket]
+      const produceIdx = basket.findIndex(item => item.slug == produce.slug)
 
-    let produce = basket[produceIdx]
-    produce.quantity += 1
-    basket[produceIdx] = produce
+      // CASE 1: not in basket
+      if (produceIdx == -1) {
+        return [...basket, produce]
+      }
 
-    setBasket([...basket])
+      // CASE 2: already in basket
+      let currProduce = newBasket[produceIdx]
+      currProduce.quantity += 1
+      return newBasket
+    })
   }
 
-  function subOne(post: Post) {
-    const {
-      slug,
-    } = post
+  function subOne(produce: Item) {
+    setBasket(basket => {
+      const newBasket = [...basket]
+      const produceIdx = basket.findIndex(item => item.slug == produce.slug)
 
-    const produceIdx = basket.findIndex(item => item.slug == slug.current)
+      // CASE 1: not in basket
+      if (produceIdx == -1) {
+        return newBasket
+      }
 
-    if (produceIdx == -1) {
-      return
-    }
+      // CASE 2: already in basket but 1 left
+      let currProduce = basket[produceIdx]
+      if (currProduce.quantity == 1) {
+        newBasket.splice(produceIdx, 1)
+        return newBasket
+      }
 
-    let produce = basket[produceIdx]
-
-    if (produce.quantity == 1) {
-      basket.splice(produceIdx, 1)
-      setBasket([...basket])
-      return
-    }
-
-    produce.quantity -= 1
-    basket[produceIdx] = produce
-
-    setBasket([...basket])
+      // CASE 3: already in basket but more than 1
+      currProduce.quantity -= 1
+      newBasket[produceIdx] = currProduce
+      return newBasket
+    })
   }
 
-  function setQuantity(produce: Item, quantity: number) {
-    const {
-      slug
-    } = produce
+  function setQuantity(produce: Item, newQuantity: number) {
+    setBasket(basket => {
+      const newBasket = [...basket]
+      const produceIdx = basket.findIndex(item => item.slug == produce.slug)
 
-    const produceIdx = basket.findIndex(item => item.slug == slug)
-
-    if (produceIdx == -1) {
-      return
-    }
-
-    let current = basket[produceIdx]
-    current.quantity = quantity
-    setBasket([...basket])
+      let currProduce = basket[produceIdx]
+      currProduce.quantity = newQuantity
+      return newBasket
+    })
   }
 
   function clearEntry(produce: Item) {
-    const {
-      slug
-    } = produce
+    setBasket(basket => {
+      const newBasket = [...basket]
+      const produceIdx = basket.findIndex(item => item.slug == produce.slug)
 
-    const produceIdx = basket.findIndex(item => item.slug == slug)
+      newBasket.splice(produceIdx, 1)
+      return newBasket
+    })
+  }
 
-    if (produceIdx == -1) {
-      return
-    }
+  function toggleCheck(produce: Item) {
+    setBasket(basket => {
+      const newBasket = [...basket]
+      const produceIdx = basket.findIndex(item => item.slug == produce.slug)
 
-    basket.splice(produceIdx, 1)
-    setBasket([...basket])
+      const currProduce = newBasket[produceIdx]
+      currProduce.checked = !currProduce.checked
+      return newBasket
+    })
   }
 
   return (
-    <CartContext.Provider value={{ userId, setUserId, basket, addOne, subOne, setQuantity, clearEntry }}>
+    <CartContext.Provider value={{ basket, addOne, subOne, setQuantity, clearEntry, toggleCheck }}>
       {children}
     </CartContext.Provider>
   )

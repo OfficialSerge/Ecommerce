@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import getURL from "@/lib/getURLs"
-import { useCartContext } from "@/contexts/cart"
+import { useCartContext } from "@/contexts/CartContext"
 
 export default function BasketIcon({ produce }: { produce: Item }) {
   const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]

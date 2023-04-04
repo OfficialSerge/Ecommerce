@@ -3,8 +3,8 @@ import Link from 'next/link'
 import { client } from '@/lib/sanity.client'
 import { groq } from 'next-sanity'
 
-import ProductWindow from '@/components/ProductWindow';
-import DynamicButton from '@/components/DynamicButton';
+import ProductWindow from '@/components/utils/ProductWindow';
+import DynamicButton from '@/components/utils/DynamicButton';
 
 const QUERY_POSTS = groq`
 *[_type == 'post'] {
@@ -49,23 +49,34 @@ export default async function page({ params }: { params: { slug: string } }) {
     images,
     price,
     title,
-    slug
   } = post
 
+  const description = body[0].children[0].text
+  const formatter = Intl.NumberFormat('en-US', {
+    style: "currency",
+    currency: "USD"
+  })
+
   return (
-    <div className='text-lg text-center mx-4'>
+    <div className='text-lg mx-4'>
       <br />
       <div className='flex flex-col md:flex-row justify-between lg:justify-around'>
         <ProductWindow imgs={images} />
-        <div className='flex flex-col-reverse md:flex-col justify-between'>
-          <p className='text-2xl'>{title} ${price}</p>
+        <div className='flex flex-col-reverse justify-between md:flex-col md:mx-9 md:w-[40vw]'>
+          <div>
+            <div className='inline-flex justify-between w-full'>
+              <p className='text-2xl'>{title}</p>
+              <p className='text-2xl'>{formatter.format(price)}</p>
+            </div>
+            <p className='mr-auto'>{categories[0].title}</p>
+            <p className='mt-6'>{description}</p>
+          </div>
           <div className='flex flex-col gap-4 2xl:flex-row my-10'>
             <DynamicButton className='largeButton' add={true} post={post} />
             <DynamicButton className='largeButton' sub={true} post={post} />
           </div>
         </div>
       </div>
-      <p className='mt-6'>{body[0].children[0].text}</p>
       <br />
       <Link href="/">HOME</Link>
     </div>

@@ -1,6 +1,6 @@
 "use client"
 
-import { useCartContext } from "@/contexts/cart"
+import { useCartContext } from "@/contexts/CartContext"
 
 type Props = {
   add?: boolean;
@@ -12,13 +12,22 @@ type Props = {
 export default function DynamicButton({ add = false, sub = false, post, className }: Props) {
   const { addOne, subOne } = useCartContext()
 
+  const produce: Item = {
+    title: post.title,
+    slug: post.slug.current,
+    price: post.price,
+    quantity: 1,
+    image: post.images[0],
+    checked: true
+  }
+
   function handleClick() {
     if (add == true) {
-      addOne(post)
+      addOne(produce)
     }
 
     if (sub == true) {
-      subOne(post)
+      subOne(produce)
     }
   }
 
