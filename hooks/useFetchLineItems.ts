@@ -10,7 +10,7 @@ import { useCartContext } from "@/contexts/CartContext"
 export function useFetchLineItems() {
   const [total, setTotal] = useState(0)
   const [lineItems, setItems] = useState([])
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   const { clearEntry } = useCartContext()
 
@@ -20,8 +20,6 @@ export function useFetchLineItems() {
   useEffect(() => {
     async function fetchLineItems() {
       try {
-        setLoading(true)
-
         if (session_id == null) {
           console.warn("?session_id is null")
           return
@@ -45,7 +43,7 @@ export function useFetchLineItems() {
 
         let tally = 0
         const convertToProduce = posts.map((post: Post) => {
-          const produceQuantity = data.filter((produce: { slug: string, quantity: number }) => produce.slug == post.slug.current).quantity
+          const produceQuantity = data.filter((produce: { slug: string, quantity: number }) => produce.slug == post.slug.current)[0].quantity
           const produce: Item = {
             title: post.title,
             slug: post.slug.current,

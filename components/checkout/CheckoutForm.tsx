@@ -130,10 +130,10 @@ export default function CheckoutForm() {
                   <p>{title}</p>
                   <button className="text-blue-500" onClick={() => clearEntry(produce)}>Delete</button>
                 </div>
-                <div className="flex flex-col w-8 justify-between bg-white rounded border border-blue-200">
-                  <button className="h-6 bg-blue-200" onClick={() => addOne(produce)}>+</button>
+                <div className="flex flex-col w-8 justify-between bg-smoke rounded border border-gas-pedal">
+                  <button className="h-6 bg-gas-pedal" onClick={() => addOne(produce)}>+</button>
                   <p className="text-center">{quantity}</p>
-                  <button className="h-6 bg-blue-200" onClick={() => subOne(produce)}>-</button>
+                  <button className="h-6 bg-gas-pedal" onClick={() => subOne(produce)}>-</button>
                 </div>
                 <p className="ml-auto">{formatter.format(price)}</p>
               </div>
@@ -144,7 +144,7 @@ export default function CheckoutForm() {
       </div>
       <div className="w-full mt-6 flex">
         <button
-          className="p-3 ml-auto rounded text-green-900 bg-green-300 hover:bg-green-200 active:scale-95 transform"
+          className="p-3 ml-auto rounded bg-beige hover:bg-gas-pedal/60 active:scale-95 transform"
           onClick={(e) => handleSubmit(e)}
         >Procceed To Checkout</button>
       </div>

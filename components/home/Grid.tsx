@@ -10,7 +10,7 @@ export default function Grid({ posts }: { posts: Post[] }) {
   return (
     <div className={basket.length > 0 ? 'shopLayout md:shopLayoutMarginR' : 'shopLayout'}>
       {posts.map((post, idx) => {
-        return <Card post={post} key={idx} />
+        return <Card post={post} key={idx} idx={idx} />
       })}
     </div>
   )

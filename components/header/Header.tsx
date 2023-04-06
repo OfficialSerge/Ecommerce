@@ -86,8 +86,8 @@ export default function Header() {
         <SearchBox classNames={{
           root: 'w-full h-10 flex',
           form: 'relative h-10 w-full',
-          input: 'h-full w-full pl-3 rounded outline-none focus:border-2 focus:border-red-200',
-          submit: 'absolute w-[2rem] right-0 h-10 bg-red-200 rounded-r',
+          input: 'h-full w-full pl-3 rounded outline-none focus:border-2 focus:border-gas-pedal',
+          submit: 'absolute w-[2rem] right-0 h-10 bg-gas-pedal rounded-r',
           reset: 'hidden',
           submitIcon: 'mx-auto'
         }}
@@ -97,8 +97,8 @@ export default function Header() {
         <Hits classNames={{
           root: `w-[75vw] md:w-[33vw] bg-white`,
           // root: `w-fit bg-white ${hidden == true ? "hidden" : ""}`,
-          list: "w-full grid grid-flow-row-dense grid-cols-1 first:border-t-2 first:border-slate-200",
-          item: "w-full h-24 border-b-2 border-slate-200"
+          list: "w-full grid grid-flow-row-dense grid-cols-1",
+          item: "w-full h-24 border-t-2 border-tea-green"
         }}
           hitComponent={Hit}
         />

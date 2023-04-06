@@ -16,7 +16,7 @@
 
 @layer base {
   .layout {
-    @apply bg-gray-200 no-scrollbar mb-16 mx-9 md:mx-40;
+    @apply bg-smoke no-scrollbar mb-16 mx-9 md:mx-40;
   }
   .shopLayout {
     @apply grid gap-8 grid-flow-row-dense grid-cols-1 md:grid-cols-2 lg:grid-cols-3
@@ -29,23 +29,26 @@
   }
 
   .sideBarR {
-    @apply top-0 w-fit min-h-full border-l-2 flex flex-col overflow-y-scroll no-scrollbar;
+    @apply top-0 w-40 min-h-full border-l-4 border-l-gas-pedal border-y-0 border-r-0 flex flex-col overflow-y-scroll no-scrollbar;
+  }
+  .sideBarH {
+    @apply transform w-12;
   }
   .sideBarB {
-    @apply fixed right-0 bottom-0 w-full h-16 border border-gray-300 border-t-2 gap-4 bg-white z-10;
+    @apply fixed right-0 bottom-0 w-full h-16 border border-navy/90 border-t-gas-pedal border-t-4 gap-4 bg-navy/90 z-10;
   }
   .basketIcon {
-    @apply text-lg text-center w-40 h-fit mx-auto pt-2 border-t border-black visible;
+    @apply block text-lg text-center w-40 h-fit pt-2 mx-auto;
   }
 
   .smallButton {
     @apply h-full w-1/2 bg-gray-100/50 text-lg hover:bg-gray-400/50;
   }
   .largeButton {
-    @apply bg-blue-500 w-full mx-auto md:w-[25vmax] 2xl:w-[10vmax] h-12 text-lg rounded;
+    @apply bg-gas-pedal w-full mx-auto md:w-[25vmax] 2xl:w-[10vmax] h-12 text-lg rounded;
   }
   .largeButton:hover {
-    @apply transition hue-rotate-15 text-white; 
+    @apply transition opacity-90 text-white; 
   }
   .largeButton:active {
     @apply transform scale-95;

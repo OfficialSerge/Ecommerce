@@ -1,4 +1,7 @@
+"use client"
+
 import { useFetchLineItems } from "@/hooks/useFetchLineItems"
+
 import Image from "next/image"
 import getURL from "@/lib/getURLs"
 

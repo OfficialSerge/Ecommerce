@@ -92,6 +92,11 @@ export function CartContextProvider({ children }: { children: React.ReactNode })
       const newBasket = [...basket]
       const produceIdx = basket.findIndex(item => item.slug == produce.slug)
 
+      // CASE 1: not in basket
+      if (produceIdx == -1) {
+        return newBasket
+      }
+
       newBasket.splice(produceIdx, 1)
       return newBasket
     })

@@ -2,12 +2,38 @@
 
 import Image from "next/image"
 import getURL from "@/lib/getURLs"
+
 import { useCartContext } from "@/contexts/CartContext"
+import { useMousePosition } from "@/hooks/useMouse"
+
+import { useState, useRef, useEffect } from "react"
+
+const NUMS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+const formatter = Intl.NumberFormat('en-US', {
+  style: "currency",
+  currency: "USD"
+})
 
 export default function BasketIcon({ produce }: { produce: Item }) {
-  const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  const [showDropDown, setDropDown] = useState(false)
+  const dropDownRef = useRef<HTMLLabelElement>(null)
 
   const { setQuantity, clearEntry } = useCartContext()
+  const positionRef = useMousePosition()
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (!dropDownRef.current?.contains(event.target as Node)) {
+        setDropDown(false);
+      }
+    }
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
   const {
     slug,
@@ -16,15 +42,8 @@ export default function BasketIcon({ produce }: { produce: Item }) {
     quantity
   } = produce
 
-  function handleChange() {
-    const elementId = "quantity-" + slug
-    const value = (document.getElementById(elementId) as HTMLInputElement).value;
-
-    setQuantity(produce, parseInt(value))
-  }
-
   return (
-    <div className="invisible md:basketIcon">
+    <div className="hidden md:basketIcon">
       <div className="relative mx-auto w-10/12 h-20">
         <Image
           className="object-cover object-center rounded-lg"
@@ -35,21 +54,38 @@ export default function BasketIcon({ produce }: { produce: Item }) {
           sizes="30vw"
         />
       </div>
-      <p>${price}</p>
+      <p className="text-smoke">{formatter.format(price)}</p>
       <div className="relative w-28 h-8 mx-auto my-2">
-        <label className="absolute top-0 left-0 w-16 h-full bg-gray-200 border border-black rounded" htmlFor={"quantity-" + slug}>{quantity}</label>
-
-        <select className="absolute top-0 left-0 w-16 h-full z-10 bg-transparent text-gray-200 cursor-pointer"
-          name="quantity" id={"quantity-" + slug}
-          onChange={handleChange}
+        <label
+          ref={dropDownRef}
+          className="absolute top-0 left-0 w-16 h-full bg-smoke cursor-pointer rounded"
+          htmlFor={"quantity-" + slug}
+          onClick={() => setDropDown(true)}
         >
-          {nums.map((num) => {
-            return <option key={num} value={num}>{num}</option>
+          {quantity}
+        </label>
+        <div
+          className={
+            positionRef.current.y > 0.60
+              ? "absolute bottom-0 w-16 z-10 rounded overflow-hidden"
+              : "absolute top-0 w-16 z-10 rounded overflow-hidden"
+          }>
+          {showDropDown && NUMS.map((idx: number) => {
+            return (
+              <div key={idx} className="group/option relative h-8"
+                onClick={() => {
+                  setQuantity(produce, idx)
+                  setDropDown(false)
+                }}
+              >
+                <div className="absolute w-1 z-10 h-full bg-gas-pedal invisible group-hover/option:visible"></div>
+                <div className="absolute h-full w-full bg-smoke/70 cursor-pointer backdrop-blur group-hover/option:bg-smoke/90 transition duration-75">{idx}</div>
+              </div>
+            )
           })}
-        </select>
-
+        </div>
         <button
-          className="absolute right-0 w-8 h-8 rounded border border-red-700 bg-red-300 text-red-700 active:scale-95 transform"
+          className="absolute right-0 w-8 h-8 rounded bg-gas-pedal text-navy hover:bg-gas-pedal/70 active:scale-95 transform"
           onClick={() => clearEntry(produce)}
         >X</button>
       </div>
