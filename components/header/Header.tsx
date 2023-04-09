@@ -64,13 +64,13 @@ function Hit({ hit }: any) {
           sizes="25vw"
         />
       </div>
-      <div className='py-2 flex flex-col flex-1 mr-5'>
+      <div className='py-2 flex flex-col flex-1 mr-5 text-base'>
         <h1 className='inline-flex w-full h-fit justify-between'>
           <p>{title}</p>
           <p>${price}</p>
         </h1>
-        <p className='text-slate-400'>Category: {category.title}</p>
-        <p className='text-slate-400'>Description: {category.description}</p>
+        <p className='text-slate-400'>{category.title}</p>
+        <p className='text-slate-400'>{category.description}</p>
       </div>
     </article>
   );
