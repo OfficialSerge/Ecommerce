@@ -91,7 +91,7 @@ export async function GET() {
 
     const webhookbody = {
       ids: {
-        created: posts.map(post => post._id),
+        created: posts.map((post: Post) => post._id),
         updated: [],
         deleted: []
       }

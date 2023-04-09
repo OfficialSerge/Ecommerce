@@ -1,7 +1,7 @@
 "use client"
 
 import algoliasearch from 'algoliasearch/lite';
-import { Hits, Configure, InstantSearch, SearchBox, useSearchBox } from 'react-instantsearch-hooks-web';
+import { Hits, Configure, InstantSearch, SearchBox, useSearchBox, HitsProps } from 'react-instantsearch-hooks-web';
 
 import { useRouter } from "next/navigation";
 
@@ -15,8 +15,8 @@ const algoliaClient = algoliasearch(
 
 const searchClient = {
   ...algoliaClient,
-  search(requests) {
-    if (requests.every(({ params }) => !params.query)) {
+  search(requests: any) {
+    if (requests.every(({ params }: { params: any }) => !params.query)) {
       return Promise.resolve({
         results: requests.map(() => ({
           hits: [],
@@ -35,7 +35,7 @@ const searchClient = {
   },
 };
 
-function Hit({ hit }) {
+function Hit({ hit }: any) {
   const { clear } = useSearchBox()
   const router = useRouter()
 
@@ -80,7 +80,7 @@ export default function Header() {
   // const [hidden, setHidden] = useState(false)
 
   return (
-    <div className='relative h-20 mx-auto z-10 mt-5 w-[75vw] md:w-[33vw]'>
+    <div className='relative h-20 mx-auto z-20 mt-5 w-[75vw] md:w-[33vw]'>
       <InstantSearch searchClient={searchClient} indexName="posts">
         <Configure hitsPerPage={7} />
         <SearchBox classNames={{

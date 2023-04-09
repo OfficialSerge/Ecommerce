@@ -16,39 +16,34 @@
 
 @layer base {
   .layout {
-    @apply bg-smoke no-scrollbar mb-16 mx-9 md:mx-40;
+    @apply bg-smoke no-scrollbar mx-auto mb-16 w-10/12 md:w-9/12;
   }
   .shopLayout {
     @apply grid gap-8 grid-flow-row-dense grid-cols-1 md:grid-cols-2 lg:grid-cols-3
   }
-  .shopLayoutMarginR {
-    @apply grid gap-8 grid-flow-row-dense grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mr-4
-  }
   .card {
-    @apply relative h-[50vh] md:h-[35vh];
+    @apply relative h-[50vh] md:h-[35vh] max-w-[40rem];
   }
 
-  .sideBarR {
-    @apply top-0 w-40 min-h-full border-l-4 border-l-gas-pedal border-y-0 border-r-0 flex flex-col overflow-y-scroll no-scrollbar;
+  .sideBar {
+    @apply fixed right-0 top-0 min-h-full border border-l-4 border-l-gas-pedal border-y-0 border-r-0 bg-navy/90 flex flex-col overflow-y-scroll no-scrollbar pt-20;
   }
-  .sideBarH {
-    @apply transform w-12;
+  .bottomBar {
+    @apply fixed right-0 bottom-0 w-full h-16 border border-navy/90 border-t-gas-pedal border-t-4 bg-navy/90 inline-flex z-10;
   }
-  .sideBarB {
-    @apply fixed right-0 bottom-0 w-full h-16 border border-navy/90 border-t-gas-pedal border-t-4 gap-4 bg-navy/90 z-10;
-  }
+
   .basketIcon {
-    @apply block text-lg text-center w-40 h-fit pt-2 mx-auto;
+    @apply block text-lg text-center h-fit pt-2 mx-auto;
   }
 
   .smallButton {
     @apply h-full w-1/2 bg-gray-100/50 text-lg hover:bg-gray-400/50;
   }
   .largeButton {
-    @apply bg-gas-pedal w-full mx-auto md:w-[25vmax] 2xl:w-[10vmax] h-12 text-lg rounded;
+    @apply bg-gas-pedal w-full mx-auto p-3 md:w-[30vmax] 2xl:w-full 2xl:text-xl max-w-sm text-lg rounded text-navy;
   }
   .largeButton:hover {
-    @apply transition opacity-90 text-white; 
+    @apply transition bg-navy opacity-90 text-smoke; 
   }
   .largeButton:active {
     @apply transform scale-95;
@@ -56,10 +51,9 @@
   .productImg {
     @apply relative w-full h-[35vmax]
     md:w-[40vmin] md:h-[40vmin]
-    lg:w-[50vmin] lg:h-[50vmin]
     2xl:w-[30vmax] 2xl:h-[30vmax];
   }
   .miniImgs {
-    @apply relative w-20 h-20 md:w-[7vw] md:h-[7vw] 2xl:w-[5vw] 2xl:h-[5vw];
+    @apply relative min-w-[5rem] min-h-[5rem] 2xl:w-[6vw] 2xl:h-[6vw];
   }
 }

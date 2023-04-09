@@ -5,6 +5,7 @@ import getURL from "@/lib/getURLs"
 
 import { useCartContext } from "@/contexts/CartContext"
 import { useMousePosition } from "@/hooks/useMouse"
+import { motion } from "framer-motion"
 
 import { useState, useRef, useEffect } from "react"
 
@@ -15,7 +16,7 @@ const formatter = Intl.NumberFormat('en-US', {
   currency: "USD"
 })
 
-export default function BasketIcon({ produce }: { produce: Item }) {
+export default function BasketIcon({ produce, idx }: { produce: Item, idx: number }) {
   const [showDropDown, setDropDown] = useState(false)
   const dropDownRef = useRef<HTMLLabelElement>(null)
 
@@ -42,8 +43,29 @@ export default function BasketIcon({ produce }: { produce: Item }) {
     quantity
   } = produce
 
+  const basketVariants = {
+    open: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        delay: 0.2 + (idx * 0.1),
+        y: { stiffness: 1000, velocity: -100 }
+      }
+    },
+    closed: {
+      y: 50,
+      opacity: 0,
+      transition: {
+        duration: 0.2,
+        y: { stiffness: 1000 }
+      }
+    }
+  }
+
   return (
-    <div className="hidden md:basketIcon">
+    <motion.li
+      variants={basketVariants}
+      className="hidden md:basketIcon">
       <div className="relative mx-auto w-10/12 h-20">
         <Image
           className="object-cover object-center rounded-lg"
@@ -89,6 +111,6 @@ export default function BasketIcon({ produce }: { produce: Item }) {
           onClick={() => clearEntry(produce)}
         >X</button>
       </div>
-    </div>
+    </motion.li>
   )
 }

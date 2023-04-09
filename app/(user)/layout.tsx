@@ -3,7 +3,7 @@ import '../globals.css'
 import Providers from './Providers'
 
 import Header from '@/components/header/Header'
-import SideBar from '@/components/sideBar/SideBar'
+import Navigation from '@/components/sideBar/Navigation'
 
 export const metadata = {
   title: 'Create Next App',
@@ -20,7 +20,7 @@ export default function RootLayout({
       <body className='layout'>
         <Providers>
           <Header />
-          <SideBar />
+          <Navigation />
           {children}
         </Providers>
       </body>

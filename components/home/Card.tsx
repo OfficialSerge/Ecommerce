@@ -16,7 +16,7 @@ export default function Card({ post, idx }: { post: Post, idx: number }) {
     images,
   } = post
 
-  const imgs = images.map((image) => getURL(image).url())
+  const image = getURL(images[0]).url()
 
   return (
     <motion.div
@@ -38,7 +38,7 @@ export default function Card({ post, idx }: { post: Post, idx: number }) {
       <Image
         className="object-cover object-center rounded-lg cursor-pointer"
         onClick={() => router.push(`/${slug.current}`)}
-        src={imgs[0]}
+        src={image}
         alt="CARD HERE"
         fill
         // sizes="100vw, (min-width: 768px) 50vw, (min-width: 1024px) 33vw"

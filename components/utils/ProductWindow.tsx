@@ -22,7 +22,7 @@ export default function ProductWindow({ imgs }: { imgs: Image[] }) {
         />
       </div>
 
-      <div className="my-4 flex gap-10 justify-center">
+      <div className="my-4 flex justify-evenly">
         {imgURLs.map((url, index) => {
           return (
             <div className="miniImgs" key={index}>
