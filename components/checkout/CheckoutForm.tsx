@@ -112,9 +112,9 @@ export default function CheckoutForm() {
             const imageURL = getURL(image).url()
 
             return (
-              <div className="inline-flex p-3 border border-black rounded gap-4" key={"CHF_" + idx}>
+              <div className="flex p-3 border border-black rounded gap-2 md:gap-4" key={"CHF_" + idx}>
                 <input
-                  className="cursor-pointer h-fit my-auto" type="checkbox" checked={checked}
+                  className="cursor-pointer h-fit my-auto hidden md:block" type="checkbox" checked={checked}
                   onClick={() => toggleCheck(produce)}
                 ></input>
                 <div className="relative h-20 w-20">
@@ -131,12 +131,12 @@ export default function CheckoutForm() {
                   <p>{title}</p>
                   <button className="text-blue-500" onClick={() => clearEntry(produce)}>Delete</button>
                 </div>
-                <div className="flex flex-col w-8 justify-between bg-smoke rounded border border-gas-pedal">
+                <div className="flex flex-col w-8 justify-between bg-smoke rounded border border-gas-pedal ml-auto">
                   <button className="h-6 bg-gas-pedal" onClick={() => addOne(produce)}>+</button>
                   <p className="text-center">{quantity}</p>
                   <button className="h-6 bg-gas-pedal" onClick={() => subOne(produce)}>-</button>
                 </div>
-                <p className="ml-auto">{formatter.format(price)}</p>
+                <p className="ml-2">{formatter.format(price)}</p>
               </div>
             )
           })
