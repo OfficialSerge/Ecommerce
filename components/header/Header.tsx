@@ -1,7 +1,7 @@
 "use client"
 
 import algoliasearch from 'algoliasearch/lite';
-import { Hits, Configure, InstantSearch, SearchBox, useSearchBox, HitsProps } from 'react-instantsearch-hooks-web';
+import { Hits, Configure, InstantSearch, SearchBox, useSearchBox } from 'react-instantsearch-hooks-web';
 
 import { useRouter } from "next/navigation";
 
@@ -15,7 +15,7 @@ const algoliaClient = algoliasearch(
 
 const searchClient = {
   ...algoliaClient,
-  search(requests: any) {
+  search(requests: any): Promise<{ results: any; }> {
     if (requests.every(({ params }: { params: any }) => !params.query)) {
       return Promise.resolve({
         results: requests.map(() => ({

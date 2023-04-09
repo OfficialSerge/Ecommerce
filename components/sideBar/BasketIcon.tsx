@@ -94,7 +94,7 @@ export default function BasketIcon({ produce, idx }: { produce: Item, idx: numbe
           }>
           {showDropDown && NUMS.map((idx: number) => {
             return (
-              <div key={idx} className="group/option relative h-8"
+              <div key={"DD_" + idx} className="group/option relative h-8"
                 onClick={() => {
                   setQuantity(produce, idx)
                   setDropDown(false)

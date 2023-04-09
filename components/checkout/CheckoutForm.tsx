@@ -112,7 +112,7 @@ export default function CheckoutForm() {
             const imageURL = getURL(image).url()
 
             return (
-              <div className="inline-flex p-3 border border-black rounded gap-4" key={idx}>
+              <div className="inline-flex p-3 border border-black rounded gap-4" key={"CHF_" + idx}>
                 <input
                   className="cursor-pointer h-fit my-auto" type="checkbox" checked={checked}
                   onClick={() => toggleCheck(produce)}

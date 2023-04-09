@@ -28,8 +28,8 @@ export default function OrderConfirmation() {
         const imageURL = getURL(image).url()
 
         return (
-          <div className="inline-flex p-3 border border-black rounded gap-4" key={idx}>
-            <div className="relative w-20 h-20" key={idx}>
+          <div className="inline-flex p-3 border border-black rounded gap-4" key={"OC_" + idx}>
+            <div className="relative w-20 h-20">
               <Image
                 className="object-cover object-center rounded-lg cursor-pointer"
                 src={imageURL}

@@ -37,7 +37,7 @@ export default function Grid({ posts }: { posts: Post[] }) {
       variants={gridVariants}
       className="shopLayout">
       {posts.map((post, idx) => {
-        return <Card post={post} key={idx} idx={idx} />
+        return <Card post={post} key={"CARD_" + idx} idx={idx} />
       })}
     </motion.div>
   )

@@ -88,7 +88,7 @@ export default function SideBar() {
 
       <motion.ul>
         {basket.map((produce, idx) => {
-          return <BasketIcon produce={produce} key={idx} idx={idx} />
+          return <BasketIcon produce={produce} key={"BI_" + idx} idx={idx} />
         })}
       </motion.ul>
     </motion.div >

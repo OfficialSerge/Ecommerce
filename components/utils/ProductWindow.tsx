@@ -25,7 +25,7 @@ export default function ProductWindow({ imgs }: { imgs: Image[] }) {
       <div className="my-4 flex justify-evenly">
         {imgURLs.map((url, index) => {
           return (
-            <div className="miniImgs" key={index}>
+            <div className="miniImgs" key={"PW_" + index}>
               <Image
                 className="object-cover object-center rounded-lg cursor-pointer md:hover:drop-shadow-xl transition"
                 onClick={() => setIdx(index)}
